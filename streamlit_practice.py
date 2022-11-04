@@ -1,4 +1,4 @@
-Try:
+try:
     import detectron2
 except:
     import os 
