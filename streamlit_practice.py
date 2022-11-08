@@ -28,8 +28,8 @@ cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST = 0.6
 cfg.MODEL.ROI_HEADS.NUM_CLASSES = 1
 cfg.MODEL.WEIGHTS = model_path
 
-car_metadata = MetadataCatalog.get("train")
-car_metadata.thing_classes = ["Damaged"]
+car_metadata = MetadataCatalog.get("Helmet_train1")
+Helmet_metadata.thing_classes = ["Helmet"]
 if not torch.cuda.is_available():
     cfg.MODEL.DEVICE='cpu'
 
@@ -42,7 +42,7 @@ def inference(image):
     img = np.array(image.resize((800, height)))
     outputs = predictor(img) 
     v = Visualizer(img[:, :, ::-1],
-                   metadata=car_metadata, 
+                   metadata= Helmet_metadata, 
                    scale=0.5,
                    instance_mode=ColorMode.IMAGE_BW  
     )
@@ -53,7 +53,7 @@ def inference(image):
     return out.get_image()
 
     
-input = st.file_uploader(label, type=['png', 'jpg'])
+input = st.file_uploader(label = "Insert image", type=['png', 'jpg'])
 
 if st.button('Click for detection'):
   inference(input)
