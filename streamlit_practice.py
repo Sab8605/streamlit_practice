@@ -1,5 +1,5 @@
-!pip install git+https://github.com/facebookresearch/detectron2.git
-!pip install streamlit
+import os 
+os.system('pip install git+https://github.com/facebookresearch/detectron2.git')
 
 import streamlit as st
 
@@ -50,7 +50,7 @@ cfg.MODEL.WEIGHTS = model_path
 
 
 from detectron2.data.datasets import register_coco_instances
-register_coco_instances(f"Helmet_train1",{},  f"/content/train/_annotations.coco.json", f"/content/train")
+register_coco_instances(f"Helmet_train1",{},  f"_annotations.coco.json", f"train")
 Helmet_metadata = MetadataCatalog.get("Helmet_train1")
 Helmet_metadata.thing_classes = ["Helmet"]
 if not torch.cuda.is_available():
