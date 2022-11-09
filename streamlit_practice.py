@@ -1,18 +1,17 @@
-try:
-    import detectron2
-except:
-    import os 
-    os.system('pip install git+https://github.com/facebookresearch/detectron2.git')
+!pip install git+https://github.com/facebookresearch/detectron2.git
+!pip install streamlit
+
+import streamlit as st
 
 from matplotlib.pyplot import axis
-import gradio as gr
+
 import requests
 import numpy as np
-from torch import nn
+
 import cv2
 import requests
 import torch
-
+from PIL import Image
 from detectron2 import model_zoo
 from detectron2.engine import DefaultPredictor
 from detectron2.config import get_cfg
@@ -21,14 +20,38 @@ from detectron2.data import MetadataCatalog
 from detectron2.utils.visualizer import ColorMode
 import os
 
-model_path = "model_final.pth"
+
+def load_image(image_file):
+	img = Image.open(image_file)
+	return img
+
+...
+st.write("Instance Segmentation")
+st.subheader("Image")
+image_file = st.file_uploader("Upload Images", type=["png","jpg","jpeg"])
+
+if image_file is not None:
+
+    st.image(load_image(image_file),width=250)
+
+model_path = "/content/gdrive/MyDrive/pth_folder/model_final_instance_segmentation.pth"
 
 cfg = get_cfg()
-cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST = 0.6
-cfg.MODEL.ROI_HEADS.NUM_CLASSES = 1
-cfg.MODEL.WEIGHTS = model_path
+# Force model to operate within CPU, erase if CUDA compatible devices ara available
 
-car_metadata = MetadataCatalog.get("Helmet_train1")
+# Add project-specific config (e.g., TensorMask) here if you're not running a model in detectron2's core library
+cfg.merge_from_file(model_zoo.get_config_file("COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_3x.yaml"))
+# Set threshold for this model
+cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST = 0.5  
+# Find a model from detectron2's model zoo. You can use the https://dl.fbaipublicfiles... url as well
+cfg.MODEL.WEIGHTS = model_path
+# Initialize prediction model
+
+
+
+from detectron2.data.datasets import register_coco_instances
+register_coco_instances(f"Helmet_train1",{},  f"/content/train/_annotations.coco.json", f"/content/train")
+Helmet_metadata = MetadataCatalog.get("Helmet_train1")
 Helmet_metadata.thing_classes = ["Helmet"]
 if not torch.cuda.is_available():
     cfg.MODEL.DEVICE='cpu'
@@ -48,14 +71,19 @@ def inference(image):
     )
     #v = Visualizer(img, my_metadata, scale=1.2)
     out = v.draw_instance_predictions(outputs["instances"].to("cpu"))
-    
-    
+        
     return out.get_image()
 
-    
-input = st.file_uploader(label = "Insert image", type=['png', 'jpg'])
-
 if st.button('Click for detection'):
-  inference(input)
+  inference(image_file)
 
 
+
+
+
+
+
+
+   
+
+   
