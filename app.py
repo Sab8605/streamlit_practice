@@ -36,7 +36,7 @@ if image_file is not None:
 
     st.image(load_image(image_file),width=250)
 
-model_path = "/content/gdrive/MyDrive/pth_folder/model_final_instance_segmentation.pth"
+model_path = "model_final_instance_segmentation.pth"
 
 cfg = get_cfg()
 # Force model to operate within CPU, erase if CUDA compatible devices ara available
