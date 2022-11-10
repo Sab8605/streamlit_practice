@@ -53,7 +53,7 @@ cfg.MODEL.WEIGHTS = model_path
 
 
 from detectron2.data.datasets import register_coco_instances
-register_coco_instances(f"Helmet_train1",{},  f"_annotations.coco.json", f"train")
+register_coco_instances(f"Helmet_train1",{},  f"Train/_annotations.coco.json", f"Train")
 Helmet_metadata = MetadataCatalog.get("Helmet_train1")
 Helmet_metadata.thing_classes = ["Helmet"]
 
