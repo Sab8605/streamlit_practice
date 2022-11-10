@@ -1,5 +1,8 @@
-import os 
-os.system('pip install git+https://github.com/facebookresearch/detectron2.git')
+try:
+    import detectron2
+except:
+    import os 
+    os.system('pip install git+https://github.com/facebookresearch/detectron2.git')
 
 import streamlit as st
 
