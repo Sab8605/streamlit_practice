@@ -7,8 +7,8 @@ import streamlit as st
 
 import numpy as np
 
-import cv2
-import requests
+# import cv2
+# import requests
 import torch
 from PIL import Image
 from detectron2 import model_zoo
