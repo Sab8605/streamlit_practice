@@ -3,9 +3,8 @@ os.system('pip install git+https://github.com/facebookresearch/detectron2.git')
 
 import streamlit as st
 
-from matplotlib.pyplot import axis
 
-import requests
+
 import numpy as np
 
 import cv2
@@ -38,7 +37,8 @@ model_path = "/content/gdrive/MyDrive/pth_folder/model_final_instance_segmentati
 
 cfg = get_cfg()
 # Force model to operate within CPU, erase if CUDA compatible devices ara available
-
+if not torch.cuda.is_available():
+    cfg.MODEL.DEVICE='cpu'
 # Add project-specific config (e.g., TensorMask) here if you're not running a model in detectron2's core library
 cfg.merge_from_file(model_zoo.get_config_file("COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_3x.yaml"))
 # Set threshold for this model
@@ -53,8 +53,7 @@ from detectron2.data.datasets import register_coco_instances
 register_coco_instances(f"Helmet_train1",{},  f"_annotations.coco.json", f"train")
 Helmet_metadata = MetadataCatalog.get("Helmet_train1")
 Helmet_metadata.thing_classes = ["Helmet"]
-if not torch.cuda.is_available():
-    cfg.MODEL.DEVICE='cpu'
+
 
 predictor = DefaultPredictor(cfg)
 
