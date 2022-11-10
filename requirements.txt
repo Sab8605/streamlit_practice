@@ -1,4 +1,4 @@
 torch
 torchvision
 streamlit
-cv2
+opencv
