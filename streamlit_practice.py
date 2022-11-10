@@ -78,8 +78,7 @@ def inference(image):
 
 if st.button('Click for detection'):
   inference(image_file)
-
-
+  st.image(processed_img, caption='Processed Image', use_column_width=True)      
 
 
 
